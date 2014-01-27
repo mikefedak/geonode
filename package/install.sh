@@ -140,7 +140,7 @@ function setup_apache_every_time() {
 }
 
 function one_time_setup() {
-    psqlpass=$(randpass 8 0)
+    psqlpass='F5HWAYZs'
     secretkey=$(randpass 18 0)
 
     setup_postgres_once

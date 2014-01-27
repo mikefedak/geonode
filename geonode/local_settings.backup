@@ -1,0 +1,174 @@
+# -*- coding: utf-8 -*-
+import os
+import geonode
+
+DEBUG = TEMPLATE_DEBUG = False
+
+MAX_DOCUMENT_SIZE = 10 # MB
+
+SITENAME = 'Dominode'
+SITEURL = "http://www.dominode.net/"
+
+DATABASE_ENGINE = 'postgresql_psycopg2'
+DATABASE_NAME = 'geonode'
+DATABASE_USER = 'geonode'
+DATABASE_PASSWORD = 'F5HWAYZs'
+DATABASE_HOST = 'localhost'
+DATABASE_PORT = '5432'
+
+# Make geonode upload vector layers directly to postgis
+DB_DATASTORE_NAME = 'geonode'
+DB_DATASTORE_USER = DATABASE_USER
+DB_DATASTORE_PASSWORD = DATABASE_PASSWORD
+DB_DATASTORE_HOST = DATABASE_HOST
+DB_DATASTORE_PORT = DATABASE_PORT
+DB_DATASTORE_TYPE='postgis'
+
+
+DATABASES = {
+    'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': DATABASE_NAME,
+         'USER': DATABASE_USER,
+         'PASSWORD': DATABASE_PASSWORD,
+		 'HOST': DATABASE_HOST,
+         'PORT': DATABASE_PORT,
+         
+     },
+    # vector datastore for uploads
+    'postgres_imports' : {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',        
+        'NAME': DB_DATASTORE_NAME,
+        'USER' : DB_DATASTORE_USER,
+        'PASSWORD' : DB_DATASTORE_PASSWORD,
+		'HOST': DATABASE_HOST,
+        'PORT': DATABASE_PORT,
+        
+    }
+}
+
+
+DB_DATASTORE=True
+
+LANGUAGE_CODE = 'en'
+
+MEDIA_ROOT = '/var/www/geonode/uploaded'
+STATIC_ROOT = '/var/www/geonode/static/'
+
+# secret key used in hashing, should be a long, unique string for each
+# site.  See http://docs.djangoproject.com/en/1.2/ref/settings/#secret-key
+SECRET_KEY = '2rClUnic5rWZ1fdWgO'
+
+# The FULLY QUALIFIED url to the GeoServer instance for this GeoNode.
+GEOSERVER_BASE_URL = SITEURL+ 'geoserver/'
+
+CATALOGUE = {
+    'default': {
+        # The underlying CSW backend
+        # ("pycsw_http", "pycsw_local", "geonetwork", "deegree")
+        'ENGINE': 'geonode.catalogue.backends.pycsw_local',
+        # The FULLY QUALIFIED base url to the CSW instance for this GeoNode
+        'URL': '%scatalogue/csw' % SITEURL,
+    }
+}
+
+# A Google Maps API key is needed for the 3D Google Earth view of maps
+# See http://code.google.com/apis/maps/signup.html
+GOOGLE_API_KEY = ''
+
+GEONODE_ROOT = os.path.dirname(geonode.__file__)
+
+#TEMPLATE_DIRS = (
+#    '/etc/geonode/templates',
+#    os.path.join(GEONODE_ROOT, 'templates'),
+#)
+
+# Additional directories which hold static files
+STATICFILES_DIRS = [
+	'/home/geonode/dominode/dominode/dominode/static',
+    '/etc/geonode/media',
+    os.path.join(GEONODE_ROOT, 'static'),
+]
+
+MAP_BASELAYERS = [{
+    "source": {
+        "ptype": "gxp_wmscsource",
+        "url": GEOSERVER_BASE_URL + "wms",
+        "restUrl": "/gs/rest"
+     }
+  },{
+    "source": {"ptype": "gxp_olsource"},
+    "type":"OpenLayers.Layer",
+    "args":["No background"],
+    "visibility": False,
+    "fixed": True,
+    "group":"background"
+  }, {
+    "source": {"ptype": "gxp_olsource"},
+    "type":"OpenLayers.Layer.OSM",
+    "args":["OpenStreetMap"],
+    "visibility": False,
+    "fixed": True,
+    "group":"background"
+  }, {
+    "source": {"ptype": "gxp_mapquestsource"},
+    "name":"osm",
+    "group":"background",
+    "visibility": True
+  }, {
+    "source": {"ptype": "gxp_mapquestsource"},
+    "name":"naip",
+    "group":"background",
+    "visibility": False
+  }, {
+    "source": {"ptype": "gxp_bingsource"},
+    "name": "AerialWithLabels",
+    "fixed": True,
+    "visibility": False,
+    "group":"background"
+  },{
+    "source": {"ptype": "gxp_mapboxsource"},
+  },{
+    "source": {"ptype":"gxp_googlesource"},
+    "name":"SATELLITE",
+    "visibility": False,
+    "fixed": True,
+  }
+]
+
+# Uncomment the following to receive emails whenever there are errors in GeoNode
+#ADMINS = (
+#            ('John', 'john@example.com'), 
+#         )
+
+# Uncomment the following to use a Gmail account as the email backend
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'dominode.reg@gmail.com'
+EMAIL_HOST_PASSWORD = 'yuenk$OtsAv7'
+EMAIL_PORT = 587
+REGISTRATION_OPEN = True
+
+# For more information on available settings please consult the Django docs at
+# https://docs.djangoproject.com/en/dev/ref/settings
+ALLOWED_HOSTS=[".dominode.net","www.dominode.net", "localhost"]
+# OGC (WMS/WFS/WCS) Server Settings
+# GS ROOT PW: PtOK`dgG
+OGC_SERVER = {
+    'default' : {
+        'BACKEND' : 'geonode.importer',
+        'LOCATION' : 'http://dominode.net/geoserver/',
+        'USER' : 'admin',
+        'PASSWORD' : 'dca_GEOSERVER_22',
+        'MAPFISH_PRINT_ENABLED' : True,
+        'PRINTNG_ENABLED' : True,
+        'GEONODE_SECURITY_ENABLED' : True,
+        'GEOGIT_ENABLED' : False,
+        'WMST_ENABLED' : False,
+        # Set to name of database in DATABASES dictionary to enable
+        'DATASTORE' : 'postgres_imports',
+		'DEFAULT_MAP_CENTER' : (15.44,-61.36),
+		'DEFAULT_MAP_ZOOM' : 6, 
+	    }
+}
+
