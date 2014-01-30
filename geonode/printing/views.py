@@ -14,10 +14,10 @@ from django.utils import html
 from django.forms.models import model_to_dict
 from django.views.decorators.csrf import csrf_exempt
 
-from geonode.core.maps.models import Map
-from geonode.core.layers.models import Layer
+from geonode.maps.models import Map
+from geonode.layers.models import Layer
 #Redo this path 
-from geonode.contrib.printing.models import PrintTemplate
+from geonode.printing.models import PrintTemplate
 
 
 logger = logging.getLogger(__name__)
