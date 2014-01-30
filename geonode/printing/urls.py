@@ -2,7 +2,7 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns(
-    'geonode.contrib.printing.views',
+    'geonode.printing.views',
 
     url(r'^templates$',
         'printing_template_list', name='printing_templates'

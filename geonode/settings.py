@@ -189,6 +189,8 @@ INSTALLED_APPS = (
     'geonode.social',
     'geonode.catalogue',
     'geonode.documents',
+    #Is  the printing package an internal app?
+    'geonode.printing',
 )
 
 LOGGING = {
