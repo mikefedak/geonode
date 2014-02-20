@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% load i18n %}
+{% load maps_tags %}
+{% load layers_tags %}
+{% load pagination_tags %}
+{% load staticfiles %}
+{% load url from future %}
+{% comment %}
+This is where you can override the hero area block. You can simply modify the content below or replace it wholesale to meet your own needs. 
+{% endcomment %}
+  {% block hero %}
+  <div class="hero-unit">
+    <div class="hero-unit-content">
+      <div class="intro">
+        <p>
+          {% blocktrans %}
+          Welcome to the Commonwealth of Dominica GeoNode, the 'Dominode'. This site and database is currently under development and will be subject to periodic downtime. See the <a href="http://dominode.net/help"> Documentation  for help.</a>
+          {% endblocktrans %}</p>
+		</p>
+	    <img src="../static/img/GFDRR_Banner.png" height: 80%, width: 80%>		
+      </div>
+      <div class="btns">
+        <a class="btn btn-large" href="{% url "layer_browse" %}">
+          {% trans "Explore Layers" %}
+        </a>
+        <a class="btn btn-large" href="{% url "maps_browse" %}">
+          {% trans "Explore Maps" %}
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+
+{% block extra_script %}
+	<script src="//static.getclicky.com/js" type="text/javascript"></script>
+	<script type="text/javascript">try{ clicky.init(100644298); }catch(e){}</script>
+	{% include 'search_scripts.html' %}
+{% endblock extra_script %}
