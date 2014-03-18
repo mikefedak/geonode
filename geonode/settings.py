@@ -351,7 +351,7 @@ SOUTH_TESTS_MIGRATE=False
 
 # Settings for Social Apps
 AUTH_PROFILE_MODULE = 'people.Profile'
-REGISTRATION_OPEN = False
+REGISTRATION_OPEN = True
 
 # Email for users to contact admins.
 THEME_ACCOUNT_CONTACT_EMAIL = 'admin@example.com'
