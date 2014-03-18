@@ -169,6 +169,10 @@ class ThumbnailMixin(object):
         if render is None:
             raise Exception('Must have _render_thumbnail(spec) function')
         image = render(spec)
+
+        if not image:
+            return
+
         #Clean any orphan Thumbnail before
         Thumbnail.objects.filter(resourcebase__id=None).delete()
         
@@ -351,6 +355,17 @@ class ResourceBase(models.Model, PermissionLevelMixin, ThumbnailMixin):
 
     def keyword_list(self):
         return [kw.name for kw in self.keywords.all()]
+
+    def spatial_representation_type_string(self):
+        if hasattr(self.spatial_representation_type, 'identifier'):
+            return self.spatial_representation_type.identifier
+        else:
+            if hasattr(self, 'storeType'): 
+                if self.storeType == 'coverageStore':
+                    return 'grid'
+                return 'vector'
+            else:
+                return None
 
     @property
     def keyword_csv(self):
