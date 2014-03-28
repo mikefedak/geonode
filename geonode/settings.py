@@ -154,7 +154,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
 
     # Third party apps
-
+	'csvimport',
     # Utility
     'pagination',
     'taggit',

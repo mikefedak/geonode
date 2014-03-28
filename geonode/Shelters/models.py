@@ -1,7 +1,8 @@
 
 #Add GeoDjango Module 
-from django.contrib.gis.db import models 
-
+from django.contrib.gis.db import models as gismodels 
+#Non-spatial models  
+from django.db import models 
 #Input choices
 
 BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
@@ -15,30 +16,14 @@ class Shelter_Details(models.Model):
 	community = models.CharField("Community", max_length=30)
 	recommendations = models.TextField("Final Recommendations")
 	# ADD IN LOCATION FIELD AS POINT FIELD 
-
-class Shelter_Contact(models.Model):
-	code = models.ForeignKey(Shelter_Details, verbose name ="shelter key code",unique=True) #Link contact to details, it takes the PK by default
 	manager = models.CharField("Shelter Manager", max_length=30)
 	assistant = models.CharField("Assistant Manager", max_length=30)
 	em_comm = models.CharField("Emergency Communication Capability", max_length=30)
 	tel_num = models.BigIntegerField("Shelter Telephone Number")
 	contact_p = models.CharField("Additional Contact Person", max_length=30)
-
-class Manager_Contact(models.Model):
-	manager = models.OneToOneField(Shelter_Contact, to_field="manager", related_name="shelter manager")
-	tel_num = models.BigIntegerField("Shelter Manager Telephone Number")
-	
-class Assistant_Contact(models.Model):
-	assistant = models.OneToOneField(Shelter_Contact, to_field="assistant", related_name="assistant shelter manager")
-	tel_num = models.BigIntegerField("Assistant Manager Telephone Number")
-
-class Contact_Person(models.Model):
-	manager = models.OneToOneField(Shelter_Contact, to_field="contact_p", related_name="contact person")
-	tel_num = models.BigIntegerField("Contact Person Telephone Number")
-	
-class Shelter_Structural(models.Model):
-	#Choices lists, it would benice to get the local gov data so we could finalize the choices lists
-	code = models.ForeignKey(Shelter_Details, verbose name ="shelter key code", unique=True) #Link contact to details, it takes the PK by default
+	man_tel_num = models.BigIntegerField("Shelter Manager Telephone Number")
+	a_tel_num = models.BigIntegerField("Assistant Manager Telephone Number")
+	cp_tel_num = models.BigIntegerField("Contact Person Telephone Number")
 	b_type = models.CharField("Primary Construction Material", max_length=15)
 	num_floors = models.PositiveIntegerField("Number of Floors", max_value=6, min_value=1)
 	occupied = models.CharField("Floors Occupied for Shelter", max length=50)
@@ -65,19 +50,12 @@ class Shelter_Structural(models.Model):
 	open_blocks = models.BooleanField("Does any of the walls have open blocks", choices=BOOL_CHOICES)
 	shutters = models.CharField("Do the windows have shutters", max_length=50)
 	open_shutters = models.CharField("If yes, does the open blocks have shutters", max_length=20) 
-
-
-class Shelter_Hazards(models.Model):
 	flood_pot = models.BooleanField("Is the facility prone to flooding", choices=BOOL_CHOICES)
 	com_flood = models.TextField("Comments on flooding potential")
 	tsunami_r = models.CharField("Could the shelter be affected by storm surge or tsunami", choices=(('SS', 'Storm surge'),('TS', 'Tsunami')))
-	code = models.ForeignKey(Shelter_Details, verbose name ="shelter key code", unique=True) #Link contact to details, it takes the PK by default
 	struc_d = models.TextField("Damage to structure in the past 12-24months")
 	haz_com = models.TextField("Comments on any porential hazards")
 	past_events = models.TextField("Please list any past events that have impacted the shelter or community")
-
-class  Shelter_Accessibility(models.Model):
-	code = models.ForeignKey(Shelter_Details, verbose name ="shelter key code", unique=True) #Link contact to details, it takes the PK by default
 	accessib = models.BooleanField("Is accessibility to the shelter easy", choices=BOOL_CHOICES)
 	park_space = models.PositiveIntegerField("How many parking spaces are available on-site")
 	exits = models.BooleanField("Are multiple entrances and exits available for persons in the shelter", choices=BOOL_CHOICES)
@@ -85,9 +63,6 @@ class  Shelter_Accessibility(models.Model):
  	ramp = models.CharField("Access ramp for building for disabled", max_length=30)
 	capacity = models.PositiveIntegerField("Approximately how many people could sleep in the shelter")
 	past_use = models.PositiveIntegerField("What is the maximum number of people who have used the shelter in the past 10 years in an event")
-
-class Shelter_Amenities(models.Model):
-	code = models.ForeignKey(Shelter_Details, verbose name ="shelter key code", unique=True) #Link contact to details, it takes the PK by default
 	kitchen = models.BooleanField("Kitchen Facility", choices=BOOL_CHOICES)
 	cooking_type = models.CharField("Type of Cooking Apparatus", max_length=30)
 	other_storage = models.CharField("Other Storage Area", max_length=30)
