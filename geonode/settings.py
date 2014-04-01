@@ -152,10 +152,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.messages',
     'django.contrib.humanize',
-
+	'django.contrib.gis',
     # Third party apps
 	'csvimport',
-    # Utility
+   
+	# Utility
     'pagination',
     'taggit',
     'taggit_templatetags',
@@ -193,6 +194,7 @@ INSTALLED_APPS = (
     'geonode.documents',
     #Is  the printing package an internal app?
     'geonode.printing',
+    'geonode.Shelters',
 )
 
 LOGGING = {
