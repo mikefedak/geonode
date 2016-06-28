@@ -348,6 +348,13 @@ Go to the folder ``sites-available`` and create a file called ``geonode``:
     $ sudo gedit geonode
 
 This file should include the following, but don´t forget to adjust the paths!
+Note: If you are using a version of apache older than 2.4 replace Require all granted with Allow from all and also add the line Order deny,allow above it.
+In proxy for 2.2 use:
+.. code-block:: console
+    <proxy *>
+    Order allow,deny
+    Allow from all
+    </proxy>
 
 .. code-block:: ini
 
@@ -367,18 +374,18 @@ This file should include the following, but don´t forget to adjust the paths!
         WSGIScriptAlias / /home/user/geonode/geonode/wsgi.py
 
         <Directory "/home/user/geonode/geonode/">
-        Order allow,deny
+        <Files wsgi.py>
             Options Indexes FollowSymLinks
-            Allow from all
+            Require all granted
             IndexOptions FancyIndexing
+        </Files>
         </Directory>
 
         Alias /static/ /home/user/geonode/geonode/static/
         Alias /uploaded/ /home/user/geonode/geonode/uploaded/
 
         <Proxy *>
-            Order allow,deny
-            Allow from all
+            Require all granted
         </Proxy>
 
         ProxyPreserveHost On
